@@ -1,4 +1,4 @@
-depend:
-CFLAGS:-Wall -ansi -pedantic -g -std=c++11 -O0 -g 
-LDFLAGS:
+depend:quicky_exception simple_gui
+CFLAGS:-Wall -ansi -std=c++11 -pedantic -g -O0
+LDFLAGS:-lpthread
 
