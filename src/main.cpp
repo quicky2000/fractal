@@ -15,15 +15,19 @@
       along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 #include "worker.h"
+#include "worker_factory.h"
 #include "simple_gui.h"
 #include "quicky_exception.h"
+#include "parameter_manager.h"
 #include <thread>
 #include <iostream>
 #include <atomic>
 #include <chrono>
 #include <vector>
+#include <iomanip>
 
 using namespace fractal;
+using namespace parameter_manager;
 
 void periodic_refresh(const std::atomic<bool> & p_stop,simple_gui & p_gui)
 {
@@ -39,48 +43,124 @@ void periodic_refresh(const std::atomic<bool> & p_stop,simple_gui & p_gui)
 //------------------------------------------------------------------------------
 int main(int argc,char ** argv)
 {
-  simple_gui l_gui;
-  unsigned int l_width = 640;
-  unsigned int l_height = 480;
-
-  l_gui.createWindow(l_width,l_height);
-
-  // Create color tables
-  uint8_t l_component_values[] = {0xFF,0xF,0x0};
-  std::vector<uint32_t> l_color_tables;
-  for(auto l_iter_red : l_component_values)
+  try
     {
-      for(auto l_iter_green : l_component_values)
+      // Defining application command line parameters
+      parameter_manager::parameter_manager l_param_manager("fractal.exe","--",0);
+      parameter_if l_width_param("width",true);
+      parameter_if l_height_param("height",true);
+      parameter_if l_type_param("type",true);
+      parameter_if l_nb_param("nb",true);
+
+      l_param_manager.add(l_width_param);
+      l_param_manager.add(l_height_param);
+      l_param_manager.add(l_type_param);
+      l_param_manager.add(l_nb_param);
+
+      // Treating parameters
+      l_param_manager.treat_parameters(argc,argv);
+      unsigned int l_width = l_width_param.value_set() ? l_width_param.get_value<uint32_t>() : 1600;
+      unsigned int l_height = l_height_param.value_set() ? l_height_param.get_value<uint32_t>() : 1200;
+      std::string l_worker_type = l_type_param.value_set() ? l_type_param.get_value<std::string>() : "horizontal";
+      unsigned int l_worker_nb = l_nb_param.value_set() ? l_nb_param.get_value<uint32_t>() : std::thread::hardware_concurrency();
+
+      simple_gui l_gui;
+      l_gui.createWindow(l_width,l_height);
+
+      // Create color tables
+      std::vector<uint32_t> l_color_tables;
+      l_color_tables.push_back(l_gui.getColorCode(0xFF,0xFF,0xFF));
+      l_color_tables.push_back(l_gui.getColorCode(0xFF,0x0,0x0));
+      l_color_tables.push_back(l_gui.getColorCode(0x0,0xFF,0x0));
+      l_color_tables.push_back(l_gui.getColorCode(0x0,0x0,0xFF));
+      l_color_tables.push_back(l_gui.getColorCode(0xFF,0xFF,0x0));
+      l_color_tables.push_back(l_gui.getColorCode(0xFF,0x0,0xFF));
+      l_color_tables.push_back(l_gui.getColorCode(0x0,0xFF,0xFF));
+      l_color_tables.push_back(l_gui.getColorCode(0xF0,0x0,0x0));
+      l_color_tables.push_back(l_gui.getColorCode(0x0,0xF0,0x0));
+      l_color_tables.push_back(l_gui.getColorCode(0x0,0x0,0xF0));
+
+      l_gui.refresh();
+
+      std::cout << "Hardware concurrency : " << l_worker_nb << std::endl ;
+      if(l_height % l_worker_nb)
 	{
-	  for(auto l_iter_blue : l_component_values)
-	    {
-	      l_color_tables.push_back(l_gui.getColorCode(l_iter_red,l_iter_green,l_iter_blue));
-	    }
+	  throw quicky_exception::quicky_logic_exception("Height % number of worker should be 0",__LINE__,__FILE__);
+	}
+      if(l_width % l_worker_nb)
+	{
+	  throw quicky_exception::quicky_logic_exception("Width % number of worker should be 0",__LINE__,__FILE__);
+	}
+
+      // Create workers
+      std::vector<worker*> l_workers;
+      for(unsigned int l_index = 0 ; l_index < l_worker_nb ; ++l_index)
+	{
+	  worker * l_worker = worker_factory::create_worker(l_worker_type,l_gui,l_index,l_width,l_height,l_color_tables[l_index],l_worker_nb);
+	  l_workers.push_back(l_worker);
+	}
+
+      // Create threads
+      std::vector<std::thread*> l_threads;
+      for(unsigned int l_index = 0 ; l_index < l_worker_nb ; ++l_index)
+	{
+	  std::thread * l_thread = new std::thread(worker::launch_worker,std::ref(*(l_workers[l_index])));
+	  l_threads.push_back(l_thread);
+	}
+
+      //  worker l_worker("toto_worker",l_gui,0,l_width,l_height,l_color_tables[0],1);
+      //  std::cout << "Create worker thread" << std::endl ;
+      //  std::thread l_thread(worker::launch_worker,std::ref(l_worker));
+
+      std::atomic<bool> l_stop(false);
+      std::thread l_refresh_thread(periodic_refresh,std::ref(l_stop),std::ref(l_gui));
+
+      // Wait for the end of worker threads
+      std::cout <<"Join worker threads" << std::endl ;
+      for(auto l_iter: l_threads)
+	{
+	  l_iter->join();
+	  delete l_iter;
+	}
+
+      // Maintain display
+      std::cout <<"Wait 3 seconds" << std::endl ;
+      std::this_thread::sleep_for(std::chrono::duration<int>(3));
+
+      std::cout << "Ask to stop" << std::endl ;
+      l_stop.store(true,std::memory_order_relaxed);
+
+      std::cout << "Join refresh thread" << std::endl ;
+      l_refresh_thread.join();
+
+      unsigned int l_total_iter = 0;
+      for(auto l_iter: l_workers)
+	{
+	  l_total_iter += l_iter->get_nb_iter();
+	}
+
+      for(auto l_iter:l_workers)
+	{
+	  std::cout << l_iter->get_name() << " : " << l_iter->get_nb_pixels() << " pixels and " << l_iter->get_nb_iter() << " iterations representing " << std::setw(4) << std::setprecision(3) << (100.0 *(l_iter->get_nb_iter())) / l_total_iter << "% in " ;
+	  std::cout << l_iter->get_duration().count() << "s";
+	  l_iter->report(std::cout);
+	  std::cout << std::endl ;
+	}
+      for(auto l_iter:l_workers)
+	{
+	  delete l_iter;
 	}
     }
-
-  l_gui.refresh();
-  std::cout << "Hardware concurrency : " << std::thread::hardware_concurrency() << std::endl ;
-
-  worker l_worker("toto worker",l_gui,0,l_width,l_height,l_color_tables[0],1);
-  std::cout << "Create worker thread" << std::endl ;
-  std::thread l_thread(worker::launch_worker,std::ref(l_worker));
-
-  std::atomic<bool> l_stop(false);
-  std::thread l_refresh_thread(periodic_refresh,std::ref(l_stop),std::ref(l_gui));
-
-  std::cout <<"Join worker thread" << std::endl ;
-  l_thread.join();
-
-  std::cout <<"Wait 10 seconds" << std::endl ;
-  std::this_thread::sleep_for(std::chrono::duration<int>(10));
-
-  std::cout << "Ask to stop" << std::endl ;
-  l_stop.store(true,std::memory_order_relaxed);
-
-  std::cout << "Join refresh thread" << std::endl ;
-  l_refresh_thread.join();
-
+  catch(quicky_exception::quicky_runtime_exception & e)
+    {
+      std::cout << "ERROR : " << e.what() << std::endl ;
+      return(-1);
+    }
+  catch(quicky_exception::quicky_logic_exception & e)
+    {
+      std::cout << "ERROR : " << e.what() << std::endl ;
+      return(-1);
+    }
   return 0;  
 }
 //EOF

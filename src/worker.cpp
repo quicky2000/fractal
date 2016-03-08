@@ -15,10 +15,11 @@
       along with this program.  If not, see <http://www.gnu.org/licenses/>
 */
 #include "worker.h"
+#include "quicky_exception.h"
 #include <iostream>
-#include <chrono>
 #include <thread>
 #include <cassert>
+#include <sstream>
 
 namespace fractal
 {
@@ -38,9 +39,17 @@ namespace fractal
     m_nb_iter(0),
     m_nb_pixels(0),
     m_color_code(p_color_code),
-    m_total_worker(p_total_worker)
+    m_total_worker(p_total_worker),
+    m_elapsed_seconds(0)
   {
+    std::stringstream l_id_stream;
+    l_id_stream << p_id;
+    m_name += "[" + l_id_stream.str() + "]";
     std::cout << "Building worker " << m_name << std::endl ;
+    if(p_id >= p_total_worker)
+      {
+	throw quicky_exception::quicky_logic_exception("Id is greater than total number of worker",__LINE__,__FILE__);
+      }
   }
 
   //----------------------------------------------------------------------------
@@ -58,6 +67,12 @@ namespace fractal
   //----------------------------------------------------------------------------
   void worker::run(void)
   {
+    std::chrono::time_point<std::chrono::system_clock> l_start = std::chrono::system_clock::now();
+    this->specialised_run();
+    std::chrono::time_point<std::chrono::system_clock> l_end = std::chrono::system_clock::now();
+    m_elapsed_seconds = l_end - l_start;
+    std::cout << get_name() << " end of run" << std::endl ;
+#if 0
     assert(1 == m_total_worker);
     std::cout << "Worker " << m_name << " running" << std::endl ;
     std::chrono::milliseconds l_wait(10);
@@ -70,12 +85,18 @@ namespace fractal
 	std::this_thread::sleep_for(l_wait);
       }
     std::cout << "Worker " << m_name << " end of run" << std::endl ;
+#endif // 0
   }
   //----------------------------------------------------------------------------
   void worker::launch_worker(worker & p_worker)
   {
     std::cout << "Launch worker " << p_worker.get_name() << std::endl ;
     p_worker.run();
+  }
+
+  //----------------------------------------------------------------------------
+  void worker::report(std::ostream & p_stream)
+  {
   }
 }
 //EOF
