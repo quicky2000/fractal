@@ -28,7 +28,8 @@ namespace fractal
 					 const unsigned int & p_width,
 					 const unsigned int & p_height,
 					 const uint32_t & p_color_code,
-					 const unsigned int & p_total_worker)
+					 const unsigned int & p_total_worker,
+					 const unsigned int & p_slot_size)
   {
     if("horizontal" == p_type)
       {
@@ -40,7 +41,7 @@ namespace fractal
       }
     else if("shared" == p_type)
       {
-	return new shared_worker(p_gui,p_id,p_width,p_height,p_color_code,p_total_worker);
+	return new shared_worker(p_gui,p_id,p_width,p_height,p_color_code,p_total_worker,p_slot_size);
       }
     else
       {

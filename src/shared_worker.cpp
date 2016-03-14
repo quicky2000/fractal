@@ -23,14 +23,16 @@ namespace fractal
 {
   //----------------------------------------------------------------------------
   shared_worker::shared_worker(simple_gui & p_gui,
-				 const unsigned int & p_id,
-				 const unsigned int & p_width,
-				 const unsigned int & p_height,
-				 const uint32_t & p_color_code,
-				 const unsigned int & p_total_worker):
+			       const unsigned int & p_id,
+			       const unsigned int & p_width,
+			       const unsigned int & p_height,
+			       const uint32_t & p_color_code,
+			       const unsigned int & p_total_worker,
+			       const unsigned int & p_slot_size):
     worker("shared",p_gui,p_id,p_width,p_height,p_color_code,p_total_worker),
     m_fail(0),
-    m_total(0)
+    m_total(0),
+    m_slot_size(p_slot_size)
   {
   }
 
@@ -38,18 +40,17 @@ namespace fractal
   void shared_worker::specialised_run(void)
   {
     unsigned int l_max = get_width() * get_height();
-    unsigned int l_slot_size = 50;
     while(m_index.load() < l_max)
       {
 	++m_total;
 	uint32_t l_old_value = m_index.load();
-	while(!m_index.compare_exchange_strong(l_old_value,l_old_value + l_slot_size))
+	while(!m_index.compare_exchange_strong(l_old_value,l_old_value + m_slot_size))
 	  {
 	    ++m_fail;
 	  }
 	if(l_old_value < l_max)
 	  {
-	    for(unsigned int l_index = l_old_value ; l_index < l_old_value + l_slot_size && l_index < l_max ; ++l_index)
+	    for(unsigned int l_index = l_old_value ; l_index < l_old_value + m_slot_size && l_index < l_max ; ++l_index)
 	      {
 		treat_pixel(l_index % get_width(),l_index / get_width(),/*m_color_code*/0);
 	      }

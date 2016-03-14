@@ -27,16 +27,18 @@ namespace fractal
   {
   public:
     shared_worker(simple_gui & p_gui,
-	   const unsigned int & p_id,
-	   const unsigned int & p_width,
-	   const unsigned int & p_height,
-	   const uint32_t & p_color_code,
-	   const unsigned int & p_total_worker);
+		  const unsigned int & p_id,
+		  const unsigned int & p_width,
+		  const unsigned int & p_height,
+		  const uint32_t & p_color_code,
+		  const unsigned int & p_total_worker,
+		  const unsigned int & p_slot_size);
     void specialised_run(void);
     void report(std::ostream & p_stream);
   private:
     unsigned int m_fail;
     unsigned int m_total;
+    unsigned int m_slot_size;
     static std::atomic<uint32_t> m_index;
   };
 

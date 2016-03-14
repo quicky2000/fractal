@@ -51,11 +51,13 @@ int main(int argc,char ** argv)
       parameter_if l_height_param("height",true);
       parameter_if l_type_param("type",true);
       parameter_if l_nb_param("nb",true);
+      parameter_if l_slot_size_param("slot-size",true);
 
       l_param_manager.add(l_width_param);
       l_param_manager.add(l_height_param);
       l_param_manager.add(l_type_param);
       l_param_manager.add(l_nb_param);
+      l_param_manager.add(l_slot_size_param);
 
       // Treating parameters
       l_param_manager.treat_parameters(argc,argv);
@@ -63,6 +65,7 @@ int main(int argc,char ** argv)
       unsigned int l_height = l_height_param.value_set() ? l_height_param.get_value<uint32_t>() : 1200;
       std::string l_worker_type = l_type_param.value_set() ? l_type_param.get_value<std::string>() : "horizontal";
       unsigned int l_worker_nb = l_nb_param.value_set() ? l_nb_param.get_value<uint32_t>() : std::thread::hardware_concurrency();
+      unsigned int l_slot_size = l_slot_size_param.value_set() ? l_slot_size_param.get_value<uint32_t>() : 1;
 
       simple_gui l_gui;
       l_gui.createWindow(l_width,l_height);
@@ -96,7 +99,7 @@ int main(int argc,char ** argv)
       std::vector<worker*> l_workers;
       for(unsigned int l_index = 0 ; l_index < l_worker_nb ; ++l_index)
 	{
-	  worker * l_worker = worker_factory::create_worker(l_worker_type,l_gui,l_index,l_width,l_height,l_color_tables[l_index],l_worker_nb);
+	  worker * l_worker = worker_factory::create_worker(l_worker_type,l_gui,l_index,l_width,l_height,l_color_tables[l_index],l_worker_nb,l_slot_size);
 	  l_workers.push_back(l_worker);
 	}
 
