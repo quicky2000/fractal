@@ -57,7 +57,7 @@ namespace fractal
   {
     std::cout << "Destroying worker " << m_name << std::endl ;
   }
-  
+
   //----------------------------------------------------------------------------
   const std::string & worker::get_name(void)const
   {

@@ -164,6 +164,6 @@ int main(int argc,char ** argv)
       std::cout << "ERROR : " << e.what() << std::endl ;
       return(-1);
     }
-  return 0;  
+  return 0;
 }
 //EOF

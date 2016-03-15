@@ -37,9 +37,9 @@ namespace fractal
     for(unsigned int l_y = 0; l_y < l_worker_height ; ++l_y)
       {
    	for(unsigned int l_x = 0 ; l_x < get_width() ; ++l_x)
-	  {
+          {
 	    treat_pixel(l_x,l_y + l_worker_height * get_id(),/*m_color_code*/0);
-   	  }
+          }
       }
   }
 }
