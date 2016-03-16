@@ -68,20 +68,20 @@ int main(int argc,char ** argv)
       unsigned int l_slot_size = l_slot_size_param.value_set() ? l_slot_size_param.get_value<uint32_t>() : 1;
 
       simple_gui l_gui;
-      l_gui.createWindow(l_width,l_height);
+      l_gui.create_window(l_width,l_height);
 
       // Create color tables
       std::vector<uint32_t> l_color_tables;
-      l_color_tables.push_back(l_gui.getColorCode(0xFF,0xFF,0xFF));
-      l_color_tables.push_back(l_gui.getColorCode(0xFF,0x0,0x0));
-      l_color_tables.push_back(l_gui.getColorCode(0x0,0xFF,0x0));
-      l_color_tables.push_back(l_gui.getColorCode(0x0,0x0,0xFF));
-      l_color_tables.push_back(l_gui.getColorCode(0xFF,0xFF,0x0));
-      l_color_tables.push_back(l_gui.getColorCode(0xFF,0x0,0xFF));
-      l_color_tables.push_back(l_gui.getColorCode(0x0,0xFF,0xFF));
-      l_color_tables.push_back(l_gui.getColorCode(0xF0,0x0,0x0));
-      l_color_tables.push_back(l_gui.getColorCode(0x0,0xF0,0x0));
-      l_color_tables.push_back(l_gui.getColorCode(0x0,0x0,0xF0));
+      l_color_tables.push_back(l_gui.get_color_code(0xFF,0xFF,0xFF));
+      l_color_tables.push_back(l_gui.get_color_code(0xFF,0x0,0x0));
+      l_color_tables.push_back(l_gui.get_color_code(0x0,0xFF,0x0));
+      l_color_tables.push_back(l_gui.get_color_code(0x0,0x0,0xFF));
+      l_color_tables.push_back(l_gui.get_color_code(0xFF,0xFF,0x0));
+      l_color_tables.push_back(l_gui.get_color_code(0xFF,0x0,0xFF));
+      l_color_tables.push_back(l_gui.get_color_code(0x0,0xFF,0xFF));
+      l_color_tables.push_back(l_gui.get_color_code(0xF0,0x0,0x0));
+      l_color_tables.push_back(l_gui.get_color_code(0x0,0xF0,0x0));
+      l_color_tables.push_back(l_gui.get_color_code(0x0,0x0,0xF0));
 
       l_gui.refresh();
 
