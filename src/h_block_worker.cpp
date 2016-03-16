@@ -20,7 +20,7 @@
 namespace fractal
 {
   //----------------------------------------------------------------------------
-  h_block_worker::h_block_worker(simple_gui & p_gui,
+  h_block_worker::h_block_worker(simple_gui::simple_gui & p_gui,
 				 const unsigned int & p_id,
 				 const unsigned int & p_width,
 				 const unsigned int & p_height,

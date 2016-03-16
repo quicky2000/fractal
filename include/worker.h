@@ -28,7 +28,7 @@ namespace fractal
   {
   public:
     worker(const std::string & p_name,
-	   simple_gui & p_gui,
+	   simple_gui::simple_gui & p_gui,
 	   const unsigned int & p_id,
 	   const unsigned int & p_width,
 	   const unsigned int & p_height,
@@ -55,7 +55,7 @@ namespace fractal
     virtual void specialised_run(void)=0;
 
     std::string m_name;
-    simple_gui & m_gui;
+    simple_gui::simple_gui & m_gui;
     unsigned int m_id;
     unsigned int m_width;
     unsigned int m_height;

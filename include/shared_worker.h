@@ -26,7 +26,7 @@ namespace fractal
   class shared_worker: public worker
   {
   public:
-    shared_worker(simple_gui & p_gui,
+    shared_worker(simple_gui::simple_gui & p_gui,
 		  const unsigned int & p_id,
 		  const unsigned int & p_width,
 		  const unsigned int & p_height,

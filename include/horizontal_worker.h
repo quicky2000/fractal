@@ -24,12 +24,12 @@ namespace fractal
   class horizontal_worker: public worker
   {
   public:
-    horizontal_worker(simple_gui & p_gui,
-	   const unsigned int & p_id,
-	   const unsigned int & p_width,
-	   const unsigned int & p_height,
-	   const uint32_t & p_color_code,
-	   const unsigned int & p_total_worker);
+    horizontal_worker(simple_gui::simple_gui & p_gui,
+		      const unsigned int & p_id,
+		      const unsigned int & p_width,
+		      const unsigned int & p_height,
+		      const uint32_t & p_color_code,
+		      const unsigned int & p_total_worker);
     void specialised_run(void);
   private:
   };

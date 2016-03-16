@@ -27,7 +27,7 @@ namespace fractal
   {
   public:
     static worker * create_worker(const std::string & p_type,
-				  simple_gui & p_gui,
+				  simple_gui::simple_gui & p_gui,
 				  const unsigned int & p_id,
 				  const unsigned int & p_width,
 				  const unsigned int & p_height,

@@ -29,7 +29,7 @@
 using namespace fractal;
 using namespace parameter_manager;
 
-void periodic_refresh(const std::atomic<bool> & p_stop,simple_gui & p_gui)
+void periodic_refresh(const std::atomic<bool> & p_stop,simple_gui::simple_gui & p_gui)
 {
   std::cout << "Create refresh thread" << std::endl ;
   while(!static_cast<bool>(p_stop))
@@ -67,7 +67,7 @@ int main(int argc,char ** argv)
       unsigned int l_worker_nb = l_nb_param.value_set() ? l_nb_param.get_value<uint32_t>() : std::thread::hardware_concurrency();
       unsigned int l_slot_size = l_slot_size_param.value_set() ? l_slot_size_param.get_value<uint32_t>() : 1;
 
-      simple_gui l_gui;
+      simple_gui::simple_gui l_gui;
       l_gui.create_window(l_width,l_height);
 
       // Create color tables
