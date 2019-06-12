@@ -30,7 +30,7 @@ namespace fractal
 		   const unsigned int & p_height,
 		   const uint32_t & p_color_code,
 		   const unsigned int & p_total_worker);
-    void specialised_run();
+    void specialised_run() override;
   private:
   };
 
