@@ -47,7 +47,6 @@ namespace fractal
       {
 	throw quicky_exception::quicky_logic_exception("worker_factory: Unkown worker type : \""+p_type+"\"",__LINE__,__FILE__);
       }
-    return nullptr;
   }
 }
 //EOF
