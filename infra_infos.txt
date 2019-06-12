@@ -1,4 +1,5 @@
 depend:quicky_exception simple_gui parameter_manager
-CFLAGS:-Wall -ansi -std=c++11 -pedantic -g -O0
+MAIN_CFLAGS:-Wall -ansi -std=c++11 -pedantic -g -O0
+CFLAGS:
 LDFLAGS:-lpthread
-
+env_variables:
