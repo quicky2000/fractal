@@ -22,31 +22,33 @@
 
 namespace fractal
 {
-  worker * worker_factory::create_worker(const std::string & p_type,
-					 simple_gui::simple_gui & p_gui,
-					 const unsigned int & p_id,
-					 const unsigned int & p_width,
-					 const unsigned int & p_height,
-					 const uint32_t & p_color_code,
-					 const unsigned int & p_total_worker,
-					 const unsigned int & p_slot_size)
-  {
-    if("horizontal" == p_type)
-      {
-	return new horizontal_worker(p_gui,p_id,p_width,p_height,p_color_code,p_total_worker);
-      }
-    else if("h_block" == p_type)
-      {
-	return new h_block_worker(p_gui,p_id,p_width,p_height,p_color_code,p_total_worker);
-      }
-    else if("shared" == p_type)
-      {
-	return new shared_worker(p_gui,p_id,p_width,p_height,p_color_code,p_total_worker,p_slot_size);
-      }
-    else
-      {
-	throw quicky_exception::quicky_logic_exception("worker_factory: Unkown worker type : \""+p_type+"\"",__LINE__,__FILE__);
-      }
-  }
+    //-------------------------------------------------------------------------
+    worker * worker_factory::create_worker(const std::string & p_type
+                                          ,simple_gui::simple_gui & p_gui
+                                          ,const unsigned int & p_id
+                                          ,const unsigned int & p_width
+                                          ,const unsigned int & p_height
+                                          ,const uint32_t & p_color_code
+                                          ,const unsigned int & p_total_worker
+                                          ,const unsigned int & p_slot_size
+                                          )
+    {
+        if("horizontal" == p_type)
+        {
+            return new horizontal_worker(p_gui,p_id,p_width,p_height,p_color_code,p_total_worker);
+        }
+        else if("h_block" == p_type)
+        {
+            return new h_block_worker(p_gui,p_id,p_width,p_height,p_color_code,p_total_worker);
+        }
+        else if("shared" == p_type)
+        {
+            return new shared_worker(p_gui,p_id,p_width,p_height,p_color_code,p_total_worker,p_slot_size);
+        }
+        else
+        {
+            throw quicky_exception::quicky_logic_exception("worker_factory: Unkown worker type : \""+p_type+"\"",__LINE__,__FILE__);
+        }
+    }
 }
 //EOF

@@ -19,29 +19,30 @@
 #include <chrono>
 namespace fractal
 {
-  //----------------------------------------------------------------------------
-  h_block_worker::h_block_worker(simple_gui::simple_gui & p_gui,
-				 const unsigned int & p_id,
-				 const unsigned int & p_width,
-				 const unsigned int & p_height,
-				 const uint32_t & p_color_code,
-				 const unsigned int & p_total_worker):
-    worker("h_block",p_gui,p_id,p_width,p_height,p_color_code,p_total_worker)
-  {
-  }
+    //----------------------------------------------------------------------------
+    h_block_worker::h_block_worker(simple_gui::simple_gui & p_gui
+                                  ,const unsigned int & p_id
+                                  ,const unsigned int & p_width
+                                  ,const unsigned int & p_height
+                                  ,const uint32_t & p_color_code
+                                  ,const unsigned int & p_total_worker
+                                  )
+    :worker("h_block", p_gui, p_id, p_width, p_height, p_color_code, p_total_worker)
+    {
+    }
 
-  //----------------------------------------------------------------------------
-  void h_block_worker::specialised_run()
-  {
-    unsigned int l_worker_height = get_height() / get_total_worker();
-    for(unsigned int l_y = 0; l_y < l_worker_height ; ++l_y)
-      {
-   	for(unsigned int l_x = 0 ; l_x < get_width() ; ++l_x)
-          {
-	    treat_pixel(l_x,l_y + l_worker_height * get_id(),/*m_color_code*/0);
-          }
-      }
-  }
+    //----------------------------------------------------------------------------
+    void h_block_worker::specialised_run()
+    {
+        unsigned int l_worker_height = get_height() / get_total_worker();
+        for(unsigned int l_y = 0; l_y < l_worker_height ; ++l_y)
+        {
+            for(unsigned int l_x = 0 ; l_x < get_width() ; ++l_x)
+            {
+                treat_pixel(l_x, l_y + l_worker_height * get_id(), /*m_color_code*/0);
+            }
+        }
+    }
 }
 
 

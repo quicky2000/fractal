@@ -24,108 +24,240 @@
 
 namespace fractal
 {
-  class worker
-  {
-  public:
-    worker(const std::string & p_name,
-	   simple_gui::simple_gui & p_gui,
-	   const unsigned int & p_id,
-	   const unsigned int & p_width,
-	   const unsigned int & p_height,
-	   const uint32_t & p_color_code,
-	   const unsigned int & p_total_worker);
-    virtual ~worker();
-    void run();
-    const std::string & get_name()const;
-    static void launch_worker(worker & p_worker);
-    inline const unsigned int & get_nb_iter()const;
-    inline const unsigned int & get_nb_pixels()const;
-    virtual void report(std::ostream & p_stream);
-    inline const std::chrono::duration<double> & get_duration()const;
-  protected:
-    inline void treat_pixel(const unsigned int & p_x,
-			    const unsigned int & p_y,
-			    const uint32_t & p_color_code);
-    inline const unsigned int & get_id()const;
-    inline const unsigned int & get_width()const;
-    inline const unsigned int & get_height()const;
-    inline const unsigned int & get_total_worker()const;
-  private:
-    virtual void specialised_run()=0;
-
-    std::string m_name;
-    simple_gui::simple_gui & m_gui;
-    unsigned int m_id;
-    unsigned int m_width;
-    unsigned int m_height;
-    unsigned int m_nb_iter;
-    unsigned int m_nb_pixels;
-    uint32_t m_color_code;
-    unsigned int m_total_worker;
-    std::chrono::duration<double> m_elapsed_seconds;
-  };
-
-  //------------------------------------------------------------------------------
-  void worker::treat_pixel(const unsigned int & p_x,
-			   const unsigned int & p_y,
-			   const uint32_t & p_color_code)
-  {
-    unsigned int l_nb_iter = 500;
-    std::complex<float> l_point((float)(3.0 * p_x / (m_width - 1.0) - 2),(float)(- 2.0 * p_y / (m_height -1.0) + 1));
-    std::complex<float> l_tmp(0,0);
-    do
-      {
-	l_tmp = l_tmp * l_tmp + l_point;
-	++m_nb_iter;
-      } while(norm(l_tmp) < 4 && l_nb_iter--);
-    if(norm(l_tmp) < 4)
-      {
-	m_gui.set_pixel_without_lock(p_x,p_y,m_color_code);
-      }
-    ++m_nb_pixels;
-  }
-
-  //------------------------------------------------------------------------------
-  const unsigned int & worker::get_id()const
+    /**
+     * Base class for thread
+     */
+    class worker
     {
-      return m_id;
+      public:
+        /**
+         * Constructor
+         * @param p_gui GUI in which computed pixel will be displayed
+         * @param p_id thread id
+         * @param p_width resolution width
+         * @param p_height resolution height
+         * @param p_color_code color code attributed to this thread
+         * @param p_total_worker total number of threads
+         */
+        worker(const std::string & p_name
+              ,simple_gui::simple_gui & p_gui
+              ,const unsigned int & p_id
+              ,const unsigned int & p_width
+              ,const unsigned int & p_height
+              ,const uint32_t & p_color_code
+              ,const unsigned int & p_total_worker
+              );
+
+        /**
+         * Destructor
+         */
+        virtual ~worker();
+
+        /**
+         * Computation code
+         */
+        void run();
+
+        /**
+         * Return thread implementation type name
+         * @return thread implementation type name
+         */
+        const std::string & get_name()const;
+
+        /**
+         * Start a thread provided as parameter
+         * @param p_worker Thread to launch
+         */
+        static void launch_worker(worker & p_worker);
+
+        /**
+         * Accessor to number of pixel computation iteration
+         * @return number of pixel computation iteration
+         */
+        inline
+        const unsigned int & get_nb_iter()const;
+
+        /**
+         * Accessor to number of computed pixels
+         * @return number of computed pixels
+         */
+        inline
+        const unsigned int & get_nb_pixels()const;
+
+        /**
+         * Report osme information about thread execution
+         * @param p_stream stream on which information is reported
+         */
+        virtual void report(std::ostream & p_stream);
+
+        /**
+         * Return duration of thread execution
+         * @return duration of thread execution
+         */
+        inline
+        const std::chrono::duration<double> & get_duration()const;
+
+      protected:
+        /**
+         * Pixel computation and display
+         * @param p_x Pixel x coordinate
+         * @param p_y Pixel y coordinate
+         * @param p_color_code color of pixel
+         */
+        inline
+        void treat_pixel(const unsigned int & p_x
+                        ,const unsigned int & p_y
+                        ,const uint32_t & p_color_code
+                        );
+        /**
+         * Accessor to thread Id
+         * @return Thread Id
+         */
+         inline
+         const unsigned int & get_id()const;
+
+         /**
+          * Accessor to resolution width
+          * @return resolution width
+          */
+          inline
+          const unsigned int & get_width()const;
+
+          /**
+           * Accessor to resolution height
+           * @return resolution height
+           */
+           inline
+           const unsigned int & get_height()const;
+
+           /**
+            * Accessor to number of thread
+            * @return number of thread
+            */
+            inline
+            const unsigned int & get_total_worker()const;
+
+      private:
+        /**
+         * Specialised hread implementation
+         */
+        virtual void specialised_run() = 0;
+
+        /**
+         * name of thread implementation
+         */
+        std::string m_name;
+
+        /**
+         * Graphical interface where pixels are displayed
+         */
+        simple_gui::simple_gui & m_gui;
+
+        /**
+         * Thread Id
+         */
+        unsigned int m_id;
+
+        /**
+         * Resolution width
+         */
+        unsigned int m_width;
+
+        /**
+         * Resolution height
+         */
+        unsigned int m_height;
+
+        /**
+         * Number of pixel computation iteration
+         */
+        unsigned int m_nb_iter;
+
+        /**
+         * Number of computed pixels
+         */
+        unsigned int m_nb_pixels;
+
+        /**
+         * Color code assigned to this thread
+         */
+        uint32_t m_color_code;
+
+        /**
+         * Number of threads
+         */
+        unsigned int m_total_worker;
+
+        /**
+         * Execution time of thread
+         */
+        std::chrono::duration<double> m_elapsed_seconds;
+    };
+
+    //------------------------------------------------------------------------------
+    void worker::treat_pixel(const unsigned int & p_x
+                            ,const unsigned int & p_y
+                            ,const uint32_t & p_color_code
+                            )
+    {
+        unsigned int l_nb_iter = 500;
+        std::complex<float> l_point((float)(3.0 * p_x / (m_width - 1.0) - 2),(float)(- 2.0 * p_y / (m_height -1.0) + 1));
+        std::complex<float> l_tmp(0,0);
+        do
+        {
+            l_tmp = l_tmp * l_tmp + l_point;
+            ++m_nb_iter;
+        }
+        while(norm(l_tmp) < 4 && l_nb_iter--);
+
+        if(norm(l_tmp) < 4)
+        {
+            m_gui.set_pixel_without_lock(p_x,p_y,m_color_code);
+        }
+        ++m_nb_pixels;
     }
 
-  //------------------------------------------------------------------------------
-  const unsigned int & worker::get_width()const
+    //------------------------------------------------------------------------------
+    const unsigned int & worker::get_id() const
     {
-      return m_width;
+        return m_id;
     }
 
-  //------------------------------------------------------------------------------
-  const unsigned int & worker::get_height()const
+    //------------------------------------------------------------------------------
+    const unsigned int & worker::get_width() const
     {
-      return m_height;
+        return m_width;
     }
 
-  //------------------------------------------------------------------------------
-  const unsigned int & worker::get_total_worker()const
-  {
-    return m_total_worker;
-  }
+    //------------------------------------------------------------------------------
+    const unsigned int & worker::get_height() const
+    {
+        return m_height;
+    }
 
-  //------------------------------------------------------------------------------
-  const unsigned int & worker::get_nb_iter()const
-  {
-    return m_nb_iter;
-  }
+    //------------------------------------------------------------------------------
+    const unsigned int & worker::get_total_worker() const
+    {
+        return m_total_worker;
+    }
 
-  //------------------------------------------------------------------------------
-  const unsigned int & worker::get_nb_pixels()const
-  {
-    return m_nb_pixels;
-  }
+    //------------------------------------------------------------------------------
+    const unsigned int & worker::get_nb_iter() const
+    {
+        return m_nb_iter;
+    }
 
-  //------------------------------------------------------------------------------
-  const std::chrono::duration<double> & worker::get_duration()const
-  {
-    return m_elapsed_seconds;
-  }
+    //------------------------------------------------------------------------------
+    const unsigned int & worker::get_nb_pixels() const
+    {
+        return m_nb_pixels;
+    }
+
+    //------------------------------------------------------------------------------
+    const std::chrono::duration<double> & worker::get_duration() const
+    {
+        return m_elapsed_seconds;
+    }
 }
 
 

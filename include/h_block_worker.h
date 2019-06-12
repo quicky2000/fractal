@@ -21,18 +21,35 @@
 
 namespace fractal
 {
-  class h_block_worker: public worker
-  {
-  public:
-    h_block_worker(simple_gui::simple_gui & p_gui,
-		   const unsigned int & p_id,
-		   const unsigned int & p_width,
-		   const unsigned int & p_height,
-		   const uint32_t & p_color_code,
-		   const unsigned int & p_total_worker);
-    void specialised_run() override;
-  private:
-  };
+    /**
+     * Thread implementation where thread compute block of lines
+     */
+	class h_block_worker: public worker
+	{
+	  public:
+	    /**
+	     * Constructor
+	     * @param p_gui GUI in which computed pixel will be displayed
+	     * @param p_id thread id
+	     * @param p_width resolution width
+	     * @param p_height resolution height
+	     * @param p_color_code color code attributed to this thread
+	     * @param p_total_worker total number of threads
+	     */
+	    h_block_worker(simple_gui::simple_gui & p_gui
+	                  ,const unsigned int & p_id
+	                  ,const unsigned int & p_width
+	                  ,const unsigned int & p_height
+	                  ,const uint32_t & p_color_code
+	                  ,const unsigned int & p_total_worker
+	                  );
+
+	    /**
+	     * Computation code
+	     */
+	    void specialised_run() override;
+	  private:
+	};
 
 }
 
