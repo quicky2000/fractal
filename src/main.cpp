@@ -27,7 +27,6 @@
 #include <iomanip>
 
 using namespace fractal;
-using namespace parameter_manager;
 
 void periodic_refresh(const std::atomic<bool> & p_stop,simple_gui::simple_gui & p_gui)
 {
@@ -47,11 +46,11 @@ int main(int argc,char ** argv)
     {
       // Defining application command line parameters
       parameter_manager::parameter_manager l_param_manager("fractal.exe","--",0);
-      parameter_if l_width_param("width",true);
-      parameter_if l_height_param("height",true);
-      parameter_if l_type_param("type",true);
-      parameter_if l_nb_param("nb",true);
-      parameter_if l_slot_size_param("slot-size",true);
+      parameter_manager::parameter_if l_width_param("width",true);
+      parameter_manager::parameter_if l_height_param("height",true);
+      parameter_manager::parameter_if l_type_param("type",true);
+      parameter_manager::parameter_if l_nb_param("nb",true);
+      parameter_manager::parameter_if l_slot_size_param("slot-size",true);
 
       l_param_manager.add(l_width_param);
       l_param_manager.add(l_height_param);
