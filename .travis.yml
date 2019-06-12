@@ -37,5 +37,5 @@ before_install:
 script:
 # Build
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then generate_makefile fractal; make test; ./bin/fractal.exe; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake $QUICKY_REPOSITORY/fractal; make; ./test_fractal; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then cmake $QUICKY_REPOSITORY/fractal; make; ./fractal; fi
 #EOF
