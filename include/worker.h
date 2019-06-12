@@ -72,7 +72,7 @@ namespace fractal
 			   const uint32_t & p_color_code)
   {
     unsigned int l_nb_iter = 500;
-    std::complex<float> l_point(3.0 * p_x / (m_width - 1.0) - 2,- 2.0 * p_y / (m_height -1.0) + 1);
+    std::complex<float> l_point((float)(3.0 * p_x / (m_width - 1.0) - 2),(float)(- 2.0 * p_y / (m_height -1.0) + 1));
     std::complex<float> l_tmp(0,0);
     do
       {
