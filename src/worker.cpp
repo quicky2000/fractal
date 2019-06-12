@@ -53,19 +53,19 @@ namespace fractal
   }
 
   //----------------------------------------------------------------------------
-  worker::~worker(void)
+  worker::~worker()
   {
     std::cout << "Destroying worker " << m_name << std::endl ;
   }
 
   //----------------------------------------------------------------------------
-  const std::string & worker::get_name(void)const
+  const std::string & worker::get_name()const
   {
     return m_name;
   }
 
   //----------------------------------------------------------------------------
-  void worker::run(void)
+  void worker::run()
   {
     std::chrono::time_point<std::chrono::system_clock> l_start = std::chrono::system_clock::now();
     this->specialised_run();

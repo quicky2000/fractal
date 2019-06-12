@@ -33,7 +33,7 @@ namespace fractal
 		  const uint32_t & p_color_code,
 		  const unsigned int & p_total_worker,
 		  const unsigned int & p_slot_size);
-    void specialised_run(void);
+    void specialised_run();
     void report(std::ostream & p_stream);
   private:
     unsigned int m_fail;

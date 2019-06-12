@@ -37,7 +37,7 @@ namespace fractal
   }
 
   //----------------------------------------------------------------------------
-  void shared_worker::specialised_run(void)
+  void shared_worker::specialised_run()
   {
     unsigned int l_max = get_width() * get_height();
     while(m_index.load() < l_max)

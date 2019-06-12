@@ -31,7 +31,7 @@ namespace fractal
   }
 
   //----------------------------------------------------------------------------
-  void h_block_worker::specialised_run(void)
+  void h_block_worker::specialised_run()
   {
     unsigned int l_worker_height = get_height() / get_total_worker();
     for(unsigned int l_y = 0; l_y < l_worker_height ; ++l_y)

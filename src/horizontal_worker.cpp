@@ -31,7 +31,7 @@ namespace fractal
   }
 
   //----------------------------------------------------------------------------
-  void horizontal_worker::specialised_run(void)
+  void horizontal_worker::specialised_run()
   {
     //    std::chrono::milliseconds l_wait(10);
     for(unsigned int l_y = 0 + get_id(); l_y < get_height() ; l_y+= get_total_worker())

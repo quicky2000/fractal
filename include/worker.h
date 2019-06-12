@@ -34,25 +34,25 @@ namespace fractal
 	   const unsigned int & p_height,
 	   const uint32_t & p_color_code,
 	   const unsigned int & p_total_worker);
-    virtual ~worker(void);
-    void run(void);
-    const std::string & get_name(void)const;
+    virtual ~worker();
+    void run();
+    const std::string & get_name()const;
     static void launch_worker(worker & p_worker);
     typedef void (*launcher_type)(worker&);
-    inline const unsigned int & get_nb_iter(void)const;
-    inline const unsigned int & get_nb_pixels(void)const;
+    inline const unsigned int & get_nb_iter()const;
+    inline const unsigned int & get_nb_pixels()const;
     virtual void report(std::ostream & p_stream);
-    inline const std::chrono::duration<double> & get_duration(void)const;
+    inline const std::chrono::duration<double> & get_duration()const;
   protected:
     inline void treat_pixel(const unsigned int & p_x,
 			    const unsigned int & p_y,
 			    const uint32_t & p_color_code);
-    inline const unsigned int & get_id(void)const;
-    inline const unsigned int & get_width(void)const;
-    inline const unsigned int & get_height(void)const;
-    inline const unsigned int & get_total_worker(void)const;
+    inline const unsigned int & get_id()const;
+    inline const unsigned int & get_width()const;
+    inline const unsigned int & get_height()const;
+    inline const unsigned int & get_total_worker()const;
   private:
-    virtual void specialised_run(void)=0;
+    virtual void specialised_run()=0;
 
     std::string m_name;
     simple_gui::simple_gui & m_gui;
@@ -87,43 +87,43 @@ namespace fractal
   }
 
   //------------------------------------------------------------------------------
-  const unsigned int & worker::get_id(void)const
+  const unsigned int & worker::get_id()const
     {
       return m_id;
     }
 
   //------------------------------------------------------------------------------
-  const unsigned int & worker::get_width(void)const
+  const unsigned int & worker::get_width()const
     {
       return m_width;
     }
 
   //------------------------------------------------------------------------------
-  const unsigned int & worker::get_height(void)const
+  const unsigned int & worker::get_height()const
     {
       return m_height;
     }
 
   //------------------------------------------------------------------------------
-  const unsigned int & worker::get_total_worker(void)const
+  const unsigned int & worker::get_total_worker()const
   {
     return m_total_worker;
   }
 
   //------------------------------------------------------------------------------
-  const unsigned int & worker::get_nb_iter(void)const
+  const unsigned int & worker::get_nb_iter()const
   {
     return m_nb_iter;
   }
 
   //------------------------------------------------------------------------------
-  const unsigned int & worker::get_nb_pixels(void)const
+  const unsigned int & worker::get_nb_pixels()const
   {
     return m_nb_pixels;
   }
 
   //------------------------------------------------------------------------------
-  const std::chrono::duration<double> & worker::get_duration(void)const
+  const std::chrono::duration<double> & worker::get_duration()const
   {
     return m_elapsed_seconds;
   }
