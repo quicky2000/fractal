@@ -38,7 +38,6 @@ namespace fractal
     void run();
     const std::string & get_name()const;
     static void launch_worker(worker & p_worker);
-    typedef void (*launcher_type)(worker&);
     inline const unsigned int & get_nb_iter()const;
     inline const unsigned int & get_nb_pixels()const;
     virtual void report(std::ostream & p_stream);
