@@ -26,11 +26,11 @@ namespace fractal
     //----------------------------------------------------------------------------
     worker::worker(const std::string & p_name
                   ,simple_gui::simple_gui & p_gui
-                  ,const unsigned int & p_id
-                  ,const unsigned int & p_width
-                  ,const unsigned int & p_height
-                  ,const uint32_t & p_color_code
-                  ,const unsigned int & p_total_worker
+                  ,unsigned int p_id
+                  ,unsigned int p_width
+                  ,unsigned int p_height
+                  ,uint32_t p_color_code
+                  ,unsigned int p_total_worker
                   )
     :m_name(p_name)
     ,m_gui(p_gui)

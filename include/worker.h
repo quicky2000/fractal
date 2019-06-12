@@ -41,11 +41,11 @@ namespace fractal
          */
         worker(const std::string & p_name
               ,simple_gui::simple_gui & p_gui
-              ,const unsigned int & p_id
-              ,const unsigned int & p_width
-              ,const unsigned int & p_height
-              ,const uint32_t & p_color_code
-              ,const unsigned int & p_total_worker
+              ,unsigned int p_id
+              ,unsigned int p_width
+              ,unsigned int p_height
+              ,uint32_t p_color_code
+              ,unsigned int p_total_worker
               );
 
         /**
@@ -75,14 +75,14 @@ namespace fractal
          * @return number of pixel computation iteration
          */
         inline
-        const unsigned int & get_nb_iter()const;
+        unsigned int get_nb_iter()const;
 
         /**
          * Accessor to number of computed pixels
          * @return number of computed pixels
          */
         inline
-        const unsigned int & get_nb_pixels()const;
+        unsigned int get_nb_pixels()const;
 
         /**
          * Report osme information about thread execution
@@ -105,37 +105,37 @@ namespace fractal
          * @param p_color_code color of pixel
          */
         inline
-        void treat_pixel(const unsigned int & p_x
-                        ,const unsigned int & p_y
-                        ,const uint32_t & p_color_code
+        void treat_pixel(unsigned int p_x
+                        ,unsigned int p_y
+                        ,uint32_t p_color_code
                         );
         /**
          * Accessor to thread Id
          * @return Thread Id
          */
-         inline
-         const unsigned int & get_id()const;
+        inline
+        unsigned int get_id()const;
 
-         /**
-          * Accessor to resolution width
-          * @return resolution width
-          */
-          inline
-          const unsigned int & get_width()const;
+        /**
+         * Accessor to resolution width
+         * @return resolution width
+         */
+        inline
+        unsigned int get_width()const;
 
-          /**
-           * Accessor to resolution height
-           * @return resolution height
-           */
-           inline
-           const unsigned int & get_height()const;
+        /**
+         * Accessor to resolution height
+         * @return resolution height
+         */
+        inline
+        unsigned int get_height()const;
 
-           /**
-            * Accessor to number of thread
-            * @return number of thread
-            */
-            inline
-            const unsigned int & get_total_worker()const;
+        /**
+         * Accessor to number of thread
+         * @return number of thread
+         */
+        inline
+        unsigned int get_total_worker()const;
 
       private:
         /**
@@ -195,9 +195,9 @@ namespace fractal
     };
 
     //------------------------------------------------------------------------------
-    void worker::treat_pixel(const unsigned int & p_x
-                            ,const unsigned int & p_y
-                            ,const uint32_t & p_color_code
+    void worker::treat_pixel(unsigned int p_x
+                            ,unsigned int p_y
+                            ,uint32_t p_color_code
                             )
     {
         unsigned int l_nb_iter = 500;
@@ -218,37 +218,37 @@ namespace fractal
     }
 
     //------------------------------------------------------------------------------
-    const unsigned int & worker::get_id() const
+    unsigned int worker::get_id() const
     {
         return m_id;
     }
 
     //------------------------------------------------------------------------------
-    const unsigned int & worker::get_width() const
+    unsigned int worker::get_width() const
     {
         return m_width;
     }
 
     //------------------------------------------------------------------------------
-    const unsigned int & worker::get_height() const
+    unsigned int worker::get_height() const
     {
         return m_height;
     }
 
     //------------------------------------------------------------------------------
-    const unsigned int & worker::get_total_worker() const
+    unsigned int worker::get_total_worker() const
     {
         return m_total_worker;
     }
 
     //------------------------------------------------------------------------------
-    const unsigned int & worker::get_nb_iter() const
+    unsigned int worker::get_nb_iter() const
     {
         return m_nb_iter;
     }
 
     //------------------------------------------------------------------------------
-    const unsigned int & worker::get_nb_pixels() const
+    unsigned int worker::get_nb_pixels() const
     {
         return m_nb_pixels;
     }
