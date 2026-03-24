@@ -1,6 +1,6 @@
 # Fractal
 
-Continuous integration with [Travis-Ci](https://travis-ci.org/quicky2000/fractal) : ![Build Status](https://travis-ci.org/quicky2000/fractal.svg?branch=master)
+Continuous integration with [Travis-Ci](https://app.travis-ci.com/github/quicky2000/fractal) : ![Build Status](https://travis-ci.org/quicky2000/fractal.svg?branch=master)
 
 The aim of this project is to experiment around C++ Thread to compute Mandlebrot fractal
 
